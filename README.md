@@ -105,6 +105,22 @@ Configure the plugin permissions in your `capabilities/default.json`:
 }
 ```
 
+### Configuration
+
+You can configure the plugin in your `tauri.conf.json`:
+
+```json
+{
+  "plugins": {
+    "notifications": {
+      "clearOnFocus": true
+    }
+  }
+}
+```
+
+- `clearOnFocus`: Automatically clear all active notifications and the app badge number when the application gains focus. **Currently supported on Android and iOS only.** Defaults to `false`.
+
 Register the plugin in your Tauri app:
 
 ```rust

@@ -28,6 +28,7 @@ class PluginConfig {
   var icon: String? = null
   var sound: String? = null
   var iconColor: String? = null
+  var clearOnFocus: Boolean = false
 }
 
 @InvokeArg
@@ -150,6 +151,14 @@ class NotificationPlugin(private val activity: Activity): Plugin(activity) {
     val intent = activity.intent
     intent?.let {
       onIntent(it)
+    }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    val config = getConfig(PluginConfig::class.java)
+    if (config.clearOnFocus) {
+      notificationManager.cancelAll()
     }
   }
 

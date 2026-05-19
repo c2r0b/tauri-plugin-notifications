@@ -249,8 +249,8 @@ impl<R: Runtime, T: Manager<R>> crate::NotificationsExt<R> for T {
 
 /// Initializes the plugin.
 #[must_use]
-pub fn init<R: Runtime>() -> TauriPlugin<R> {
-    Builder::new("notifications")
+pub fn init<R: Runtime>() -> TauriPlugin<R, Config> {
+    Builder::<R, Config>::new("notifications")
         .invoke_handler(tauri::generate_handler![
             commands::notify,
             commands::request_permission,

@@ -372,6 +372,16 @@ pub struct Action {
     input_placeholder: Option<String>,
 }
 
+#[derive(Debug, serde::Deserialize, Default, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct Config {
+    #[serde(default)]
+    pub clear_on_focus: bool,
+    pub icon: Option<String>,
+    pub sound: Option<String>,
+    pub icon_color: Option<String>,
+}
+
 pub use android::*;
 
 mod android {

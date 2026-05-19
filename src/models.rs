@@ -876,4 +876,16 @@ mod tests {
         assert!(json.contains("\"interval\":\"day\""));
         assert!(json.contains("\"count\":5"));
     }
+
+    #[test]
+    fn test_config_deserialization() {
+        let json = r#"{"clearOnFocus":true,"icon":"test_icon"}"#;
+        let config: Config = serde_json::from_str(json).expect("Failed to deserialize config");
+        assert!(config.clear_on_focus);
+        assert_eq!(config.icon, Some("test_icon".to_string()));
+
+        let json = r#"{}"#;
+        let config: Config = serde_json::from_str(json).expect("Failed to deserialize empty config");
+        assert!(!config.clear_on_focus);
+    }
 }

@@ -153,6 +153,13 @@ struct SetClickListenerActiveArgs: Decodable {
   let active: Bool
 }
 
+struct PluginConfig: Decodable {
+  var icon: String?
+  var sound: String?
+  var iconColor: String?
+  var clearOnFocus: Bool?
+}
+
 class NotificationPlugin: Plugin {
   let notificationHandler = NotificationHandler()
   let notificationManager = NotificationManager()
@@ -172,6 +179,20 @@ class NotificationPlugin: Plugin {
 
   public override func load(webview: WKWebView) {
     super.load(webview: webview)
+
+    NotificationCenter.default.addObserver(
+      forName: UIApplication.didBecomeActiveNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      let config = self?.getConfig(PluginConfig.self)
+      if config?.clearOnFocus == true {
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        DispatchQueue.main.async(execute: {
+          UIApplication.shared.applicationIconBadgeNumber = 0
+        })
+      }
+    }
 
     #if ENABLE_PUSH_NOTIFICATIONS
       // Store reference to this plugin for event triggering

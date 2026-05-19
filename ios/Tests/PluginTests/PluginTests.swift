@@ -544,6 +544,25 @@ final class NotificationTests: XCTestCase {
         XCTAssertEqual(json?["source"] as? String, "local")
     }
 
+    func testPluginConfigDecoding() throws {
+        let json = """
+        {
+            "icon": "ic_notification",
+            "sound": "custom_sound",
+            "iconColor": "#FF0000",
+            "clearOnFocus": true
+        }
+        """
+
+        let decoder = JSONDecoder()
+        let config = try decoder.decode(PluginConfig.self, from: json.data(using: .utf8)!)
+
+        XCTAssertEqual(config.icon, "ic_notification")
+        XCTAssertEqual(config.sound, "custom_sound")
+        XCTAssertEqual(config.iconColor, "#FF0000")
+        XCTAssertEqual(config.clearOnFocus, true)
+    }
+
     func testReceivedNotificationEncoding() throws {
         let active = ActiveNotification(
             id: 1,
